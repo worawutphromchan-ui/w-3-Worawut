@@ -21,16 +21,12 @@
 
         $sql = "SELECT * FROM orders";
         $result = mysqli_query($con, $sql);
-
-        // เอา var_dump ออกในหน้าใช้งานจริง เพื่อไม่ให้รบกวนความสวยงามครับ
-        // หากต้องการเช็คข้อมูลให้ลบ // ด้านล่างนี้ออกครับ
-        // var_dump($result);
     ?>
 
     <div class="max-w-6xl mx-auto bg-white rounded-xl shadow-md overflow-hidden p-6">
         <div class="mb-6">
             <h1 class="text-2xl font-semibold text-gray-800">📊 รายการข้อมูลการจองห้องพัก</h1>
-            <p class="text-sm text-gray-500 mt-1">แสดงรายละเอียดผู้เข้าพัก สถานะการชำระเงิน และห้องพัก</p>
+            <p class="text-sm text-gray-500 mt-1">แสดงรายละเอียดผู้เข้าพัก สถานะการชำระเงิน และห้องพัก (สามารถคลิกที่เลขห้องหรือรูปภาพเพื่อดูรายละเอียดห้องได้)</p>
         </div>
 
         <div class="overflow-x-auto rounded-lg border border-gray-200">
@@ -65,18 +61,24 @@
                                 <td class="px-6 py-4 text-gray-600">
                                     <?= htmlspecialchars($order["usage_type"]) ?>
                                 </td>
+                                
                                 <td class="px-6 py-4 font-mono text-blue-600 font-medium">
-                                    <?= htmlspecialchars($order["room_id"]) ?>
+                                    <a href="room.php?id=<?= urlencode($order["room_id"]) ?>" class="inline-flex items-center gap-1 hover:underline hover:text-blue-800">
+                                        🚪 <?= htmlspecialchars($order["room_id"]) ?>
+                                    </a>
                                 </td>
+                                
                                 <td class="px-6 py-4 flex justify-center">
-                                    <div class="w-32 h-20 rounded-lg overflow-hidden shadow-sm border border-gray-100">
-                                        <img 
-                                            src="<?= htmlspecialchars($order["image"]) ?>" 
-                                            class="w-full h-full object-cover"
-                                            alt="Room Image"
-                                            onerror="this.src='https://placehold.co/600x400?text=No+Image'"
-                                        >
-                                    </div>
+                                    <a href="room.php?id=<?= urlencode($order["room_id"]) ?>" class="block transform hover:scale-105 transition-transform duration-200">
+                                        <div class="w-32 h-20 rounded-lg overflow-hidden shadow-sm border border-gray-100">
+                                            <img 
+                                                src="<?= htmlspecialchars($order["image"]) ?>" 
+                                                class="w-full h-full object-cover"
+                                                alt="Room Image"
+                                                onerror="this.src='https://placehold.co/600x400?text=No+Image'"
+                                            >
+                                        </div>
+                                    </a>
                                 </td>
                             </tr>
                     <?php
