@@ -1,4 +1,39 @@
+<?php
+// 1. เชื่อมต่อฐานข้อมูล (เปลี่ยนชื่อไฟล์ตามที่คุณใช้จริง เช่น connect.php หรือ db.php)
+require_once 'connect.php'; 
+
+// 2. รับค่า ID จาก URL เช่น edit_order.php?id=11
+$order_id = $_GET['id'] ?? null;
+
+// ถ้าไม่มีการส่ง ID มา ให้กลับไปหน้าจัดการ
+if (!$order_id) {
+    header("Location: manage_order.php");
+    exit();
+}
+
+// 3. ดึงข้อมูลรายการสั่งซื้อ/การเช่าพักที่ต้องการแก้ไข
+$stmt = $conn->prepare("SELECT * FROM order_list WHERE order_id = ?"); // เปลี่ยนชื่อตาราง order_list ให้ตรงกับ DB ของคุณ
+$stmt->execute([$order_id]);
+$order = $stmt->fetch(PDO_FETCH_ASSOC);
+
+// ถ้าค้นหาแล้วไม่เจอข้อมูลใน DB
+if (!$order) {
+    echo "<script>alert('ไม่พบข้อมูลรายการนี้'); window.location='manage_order.php';</script>";
+    exit();
+}
+
+// 4. ดึงข้อมูลห้องพักทั้งหมด เพื่อนำมาแสดงในตัวเลือก <select>
+$stmt_rooms = $conn->query("SELECT * FROM room"); // เปลี่ยนชื่อตาราง room ให้ตรงกับ DB ของคุณ
+$result_rooms = $stmt_rooms->fetchAll(PDO_FETCH_ASSOC);
+?>
 <!DOCTYPE html>
+<html lang="th">
+<head>
+...
+
+<!DOCTYPE html>
+
+
 <html lang="th">
 <head>
     <meta charset="UTF-8">
